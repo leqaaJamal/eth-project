@@ -20,8 +20,12 @@ App = {
         for(var i=1; i<=5; i++){
             var publicK = "dummy";
             var privateK = "dummy;"
-            
-            const keys = crypto.generateKeyPair('rsa',{
+            const {
+                generateKeyPair,
+                publicEncrypt,
+                privateDecrypt
+              } = require('crypto');
+              generateKeyPair('rsa', {
                 modulusLength: 4096,
                 publicKeyEncoding: {
                   type: 'spki',
@@ -33,10 +37,24 @@ App = {
                   cipher: 'aes-256-cbc',
                   passphrase: 'top secret'
                 }
-              },(err, publicKey, privateKey) => {
-                  publicK = publicKey;
-                  privateK = privateKey;
-              });
+              }, (err, publicKey, privateKey) => {      publicK = publicKey;
+                privateK = privateKey;    });
+            // const keys = crypto.generateKeyPair('rsa',{
+            //     modulusLength: 4096,
+            //     publicKeyEncoding: {
+            //       type: 'spki',
+            //       format: 'pem'
+            //     },
+            //     privateKeyEncoding: {
+            //       type: 'pkcs8',
+            //       format: 'pem',
+            //       cipher: 'aes-256-cbc',
+            //       passphrase: 'top secret'
+            //     }
+            //   },(err, publicKey, privateKey) => {
+            //       publicK = publicKey;
+            //       privateK = privateKey;
+            //   });
             doctors.append({
                 "id": i,
                 "publicKey": publicK,
