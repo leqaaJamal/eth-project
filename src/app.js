@@ -2,7 +2,6 @@ App = {
     loading: false,
     contracts: {},
     doctors: [],
-  
     load: async () => {
       await App.loadDoctorsDB()
       await App.loadWeb3()
@@ -15,30 +14,36 @@ App = {
         // const doctors = require("/DoctorsDB.json");
         // const doctorsJsonString = fs.readFileSync("/DoctorsDB.json");
         // doctors = JSON.parse(doctorsJsonString);
-        
+        console.log(App.doctors)
         // const crypto = require('node:crypto');
         for(var i=1; i<=5; i++){
             var publicK = "dummy";
             var privateK = "dummy;"
-            const {
-                generateKeyPair,
-                publicEncrypt,
-                privateDecrypt
-              } = require('crypto');
-              generateKeyPair('rsa', {
-                modulusLength: 4096,
-                publicKeyEncoding: {
-                  type: 'spki',
-                  format: 'pem'
-                },
-                privateKeyEncoding: {
-                  type: 'pkcs8',
-                  format: 'pem',
-                  cipher: 'aes-256-cbc',
-                  passphrase: 'top secret'
-                }
-              }, (err, publicKey, privateKey) => {      publicK = publicKey;
-                privateK = privateKey;    });
+ 
+// convert passphrase to base64 format
+            console.log("hnaaa",r_pass_base64)
+            const key1 = CryptoJS.AES.decrypt(publicK,)
+            const key2 = CryptoJS.AES.decrypt(privateK)
+            console.log(key1)
+            // const {
+            //     generateKeyPair,
+            //     publicEncrypt,
+            //     privateDecrypt
+            //   } = require('crypto');
+            //   generateKeyPair('rsa', {
+            //     modulusLength: 4096,
+            //     publicKeyEncoding: {
+            //       type: 'spki',
+            //       format: 'pem'
+            //     },
+            //     privateKeyEncoding: {
+            //       type: 'pkcs8',
+            //       format: 'pem',
+            //       cipher: 'aes-256-cbc',
+            //       passphrase: 'top secret'
+            //     }
+            //   }, (err, publicKey, privateKey) => {      publicK = publicKey;
+            //     privateK = privateKey;    });
             // const keys = crypto.generateKeyPair('rsa',{
             //     modulusLength: 4096,
             //     publicKeyEncoding: {
@@ -55,13 +60,13 @@ App = {
             //       publicK = publicKey;
             //       privateK = privateKey;
             //   });
-            doctors.append({
+            App.doctors.push({
                 "id": i,
-                "publicKey": publicK,
-                "privateKey": privateK
+                "publicKey": publicK+i,
+                "privateKey": privateK+i
             })
         }
-        console.log(doctors);
+        console.log(App.doctors);
     },
   
     // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
