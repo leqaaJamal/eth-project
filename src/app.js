@@ -210,7 +210,6 @@ App = {
         // // Show the task
         // $newTaskTemplate.show()
       }
-      window.location.reload()
 
     },
 
