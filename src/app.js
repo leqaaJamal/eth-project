@@ -146,37 +146,6 @@ App = {
         // Show the task
         $newTaskTemplate.show()
       }
-      // const doctorId = $('#doctorId').val()
-      // privateKeyDoc = App.doctors[doctorId-1].privateKey;
-      // const PatientCount = await App.todoList.patientCount()
-      // const $patientTemplate = $('.patientTemplate')
-      // for (var i = 1; i <= PatientCount; i++) {
-      //   // Fetch the task data from the blockchain
-      //   const patient = await App.todoList.patients(i)
-      //   const patientId = patient[0]
-      //   const patientName = CryptoJS.AES.decrypt(patient[1],privateKeyDoc).toString()
-      //   const patientAge = CryptoJS.AES.decrypt(patient[2],privateKeyDoc).toString()
-      //   const patientSex = CryptoJS.AES.decrypt(patient[3],privateKeyDoc).toString()
-      //   const patientWeight = CryptoJS.AES.decrypt(patient[4],privateKeyDoc).toString()
-      //   const patientPulse = CryptoJS.AES.decrypt(patient[5],privateKeyDoc).toString()
-      //   const patientOxygen = CryptoJS.AES.decrypt(patient[6],privateKeyDoc).toString()
-  
-      //   // Create the html for the task
-      //   const $newPatientTemplate = $patientTemplate.clone()
-      //   $newPatientTemplate.find('.patientId').html(patientId)
-      //   $newPatientTemplate.find('.patientName').html(patientName)
-      //   $newPatientTemplate.find('.patientAge').html(patientAge)
-      //   $newPatientTemplate.find('.patientSex').html(patientSex)
-      //   $newPatientTemplate.find('.patientWeight').html(patientWeight)
-      //   $newPatientTemplate.find('.patientPulse').html(patientPulse)
-      //   $newPatientTemplate.find('.patientOxygen').html(patientOxygen)
-       
-      //   // Put the patient in the correct list
-      //   $('#patientList').append($newPatientTemplate)
-      //   // Show the task
-      //   $newPatientTemplate.show()
-      // }
-
     },
 
     viewPatients: async () => {
