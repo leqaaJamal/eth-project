@@ -174,7 +174,7 @@ App = {
       // Load the total task count from the blockchain
       const doctorId = $('#doctorIdToView').val()
       console.log(doctorId)
-      console.log("hnaaa")
+      console.log("hnaaaALL")
       privateKeyDoc = App.doctors[doctorId-1].privateKey;
       console.log(privateKeyDoc)
       const PatientCount = await App.todoList.patientCount()
@@ -191,7 +191,7 @@ App = {
         console.log("lmafrood patient id",patient[0].toNumber())
         console.log("lmafrood name encrypted",patient[1])
         console.log("lmafrood mateb2ash fadya",CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
-        // console.log(patientId)s
+        // console.log(patientId)
         if(CryptoJS.AES.decrypt(patient[1],privateKeyDoc)==""){
           console.log("da5al")
           continue;
@@ -215,10 +215,15 @@ App = {
         $('#patientList').append($newPatientTemplate)
         console.log("wsl le addpatients lel list")
         $newPatientTemplate.show()
-        for (var i = 1; i <= VisitCount; i++) {
-          const visit = await App.todoList.visits(i)
+        for (var j = 1; j <= VisitCount; j++) {
+          const visit = await App.todoList.visits(j)
           const VisitId = visit[0].toNumber()
+          console.log(VisitId)
+          var dec =  CryptoJS.AES.decrypt(visit[1],privateKeyDoc)
+          console.log(dec)
+          // console.log(CryptoJS.AES.decrypt(visit[1],privateKeyDoc))
           if(CryptoJS.AES.decrypt(visit[1],privateKeyDoc)==""){
+            console.log("in hnaa lmafrood yd5ol")
             continue;
           }
           const patientID22 = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[1],privateKeyDoc))
@@ -244,6 +249,90 @@ App = {
             $newVisitTemplate.show()
           }
         }
+        // Put the patient in the correct list
+        // Show the task
+      }
+    },
+
+    viewSpecificPatient: async () => {
+      // Load the total task count from the blockchain
+      const doctorId = $('#doctorIdToView1').val()
+      const patientIDWanted = $('#patientID11').val()
+      console.log(doctorId)
+      console.log("hnaaaONE")
+      privateKeyDoc = App.doctors[doctorId-1].privateKey;
+      console.log(privateKeyDoc)
+      const PatientCount = await App.todoList.patientCount()
+      const VisitCount = await App.todoList.visitCount()
+      // $('#patientList').remove('.patientTemplate')
+      const $patientTemplate = $('.patientTemplate').last()
+      const $visitTemplate = $('.visitTemplate').last();
+      $('#patientList').empty()
+      // const $patientTemplate = $('.patientTemplate')
+      for (var i = 1; i <= PatientCount; i++) {
+        // Fetch the task data from the blockchain
+        const patient = await App.todoList.patients(i)
+        const patientId = patient[0].toNumber()
+        if(patientId == patientIDWanted){
+          console.log("lmafrood patient id",patient[0].toNumber())
+          console.log("lmafrood name encrypted",patient[1])
+          console.log("lmafrood mateb2ash fadya",CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
+          // console.log(patientId)s
+          if(CryptoJS.AES.decrypt(patient[1],privateKeyDoc)==""){
+            console.log("da5al")
+            continue;
+          }
+          const patientName = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
+          const patientAge = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[2],privateKeyDoc));
+          const patientSex = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[3],privateKeyDoc))
+          const patientWeight = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[4],privateKeyDoc))
+          const patientPulse = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[5],privateKeyDoc))
+          const patientOxygen = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[6],privateKeyDoc))
+    
+          // Create the html for the task
+          const $newPatientTemplate = $patientTemplate.clone()
+          $newPatientTemplate.find('.patientId').html(patientId)
+          $newPatientTemplate.find('.patientName').html(patientName)
+          $newPatientTemplate.find('.patientAge').html(patientAge)
+          $newPatientTemplate.find('.patientSex').html(patientSex)
+          $newPatientTemplate.find('.patientWeight').html(patientWeight)
+          $newPatientTemplate.find('.patientPulse').html(patientPulse)
+          $newPatientTemplate.find('.patientOxygen').html(patientOxygen)
+          $('#patientList').append($newPatientTemplate)
+          console.log("wsl le addpatients lel list")
+          $newPatientTemplate.show()
+          for (var j = 1; j <= VisitCount; j++) {
+            const visit = await App.todoList.visits(j)
+            const VisitId = visit[0].toNumber()
+            if(CryptoJS.AES.decrypt(visit[1],privateKeyDoc)==""){
+              continue;
+            }
+            const patientID22 = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[1],privateKeyDoc))
+            // const $newVisitTemplate = $visitTemplate.clone()
+            if(patientID22==patientId.toString()){
+              console.log("in")
+              const $newVisitTemplate = $visitTemplate.clone()
+              const reasonForVisit = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[2],privateKeyDoc))
+              const doctorsDiagnoses = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[3],privateKeyDoc))
+              const bloodPressure = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[4],privateKeyDoc))
+              const glucose = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[5],privateKeyDoc))
+              const temperature = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[6],privateKeyDoc))
+              const prescription = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[7],privateKeyDoc))
+              $newVisitTemplate.find('.visitId').html(VisitId)
+              $newVisitTemplate.find('.patientId').html(patientID22)
+              $newVisitTemplate.find('.reasonForVisit').html(reasonForVisit)
+              $newVisitTemplate.find('.doctorsDiagnoses').html(doctorsDiagnoses)
+              $newVisitTemplate.find('.bloodPressure').html(bloodPressure)
+              $newVisitTemplate.find('.glucose').html(glucose)
+              $newVisitTemplate.find('.temperature').html(temperature)
+              $newVisitTemplate.find('.prescription').html(prescription)  
+              $('#patientList').append($newVisitTemplate)
+              $newVisitTemplate.show()
+            }
+          }
+          return;
+        }
+        
         // Put the patient in the correct list
         // Show the task
       }
