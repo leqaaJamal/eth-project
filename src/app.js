@@ -139,37 +139,83 @@ App = {
   
     renderTasks: async () => {
       // Load the total task count from the blockchain
-      const taskCount = await App.todoList.taskCount()
-      const $taskTemplate = $('.taskTemplate')
+      // const taskCount = await App.todoList.taskCount()
+      // const $taskTemplate = $('.taskTemplate')
+      const patientCount = await App.todoList.patientCount()
+      const $patientTemplate = $('.patientTemplate1')
+      const visitCount = await App.todoList.visitCount()
+      const $visitTemplate = $('.visitTemplate1')
+
   
       // Render out each task with a new task template
-      for (var i = 1; i <= taskCount; i++) {
-        // Fetch the task data from the blockchain
-        const task = await App.todoList.tasks(i)
-        const taskId = task[0].toNumber()
-        const taskContent = task[1]
-        const taskCompleted = task[2]
+      for (var i = 1; i <= patientCount; i++) {
+    
+        const patient = await App.todoList.patients(i)
+        const patientId = patient[0].toNumber()
+        const name = patient[1]
+        const age = patient[2]
+        const sex = patient[3]
+        const weight = patient[4]
+        const pulse = patient[5]
+        const oxygen = patient[6]
+
+        // Create the html for the patient
+        const $newPatientTemplate = $patientTemplate.clone()
+        $newPatientTemplate.find('.patientId111').html(patientId)
+        $newPatientTemplate.find('.patientName1').html(name)
+        $newPatientTemplate.find('.patientAge1').html(age)
+        $newPatientTemplate.find('.patientSex1').html(sex)
+        $newPatientTemplate.find('.patientWeight1').html(weight)
+        $newPatientTemplate.find('.patientPulse1').html(pulse)
+        $newPatientTemplate.find('.patientOxygen1').html(oxygen)
+         // Show the patient
+        $('#patientList1').append($newPatientTemplate)
+        $newPatientTemplate.show()
+      }
+
+      for (var i = 1; i <= visitCount; i++) {
+    
+        const visit = await App.todoList.visits(i)
+        const visitID= visit[0].toNumber()
+        const patientId = visit[1]
+        const reasonForVisit = visit[2]
+        const doctorsDiagnoses = visit[3]
+        const bloodPressure = visit[4]
+        const glucose = visit[5]
+        const temperature = visit[6]
+        const prescription = visit[7]
+
+         // Create the html for the visit
+         const $newVisitTemplate = $visitTemplate.clone()
+         $newVisitTemplate.find('.visitId111').html(visitID)
+         $newVisitTemplate.find('.patientId1111').html(patientId)
+         $newVisitTemplate.find('.reasonForVisit1').html(reasonForVisit)
+         $newVisitTemplate.find('.doctorsDiagnoses1').html(doctorsDiagnoses)
+         $newVisitTemplate.find('.bloodPressure1').html(bloodPressure)
+         $newVisitTemplate.find('.glucose1').html(glucose)
+         $newVisitTemplate.find('.temperature1').html(temperature)
+         $newVisitTemplate.find('.prescription1').html(prescription)
+          // Show the patient
+          $('#patientList1').append($newVisitTemplate)
+          $newVisitTemplate.show()
+
+        // // Create the html for the task
+        // const $newTaskTemplate = $taskTemplate.clone()
+        // $newTaskTemplate.find('.content').html(taskContent)
+        // $newTaskTemplate.find('input')
+        //                 .prop('name', taskId)
+        //                 .prop('checked', taskCompleted)
+        //                 .on('click', App.toggleCompleted)
   
-        // Create the html for the task
-        const $newTaskTemplate = $taskTemplate.clone()
-        $newTaskTemplate.find('.content').html(taskContent)
-        $newTaskTemplate.find('input')
-                        .prop('name', taskId)
-                        .prop('checked', taskCompleted)
-                        .on('click', App.toggleCompleted)
-  
-        // Put the task in the correct list
-        if (taskCompleted) {
-          $('#completedTaskList').append($newTaskTemplate)
-        } else {
-          $('#taskList').append($newTaskTemplate)
-        }
-  
-        // Show the task
-        $newTaskTemplate.show()
+        // // Show the task
+        // $newTaskTemplate.show()
       }
       window.location.reload()
+
     },
+
+
+
 
     viewPatients: async () => {
       // Load the total task count from the blockchain
@@ -313,7 +359,7 @@ App = {
             const patientID22 = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[1],privateKeyDoc))
             // const $newVisitTemplate = $visitTemplate.clone()
             if(patientID22==patientId.toString()){
-              console.log("in")
+              console.log("in visit")
               const $newVisitTemplate = $visitTemplate.clone()
               const reasonForVisit = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[2],privateKeyDoc))
               const doctorsDiagnoses = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[3],privateKeyDoc))
@@ -321,6 +367,7 @@ App = {
               const glucose = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[5],privateKeyDoc))
               const temperature = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[6],privateKeyDoc))
               const prescription = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[7],privateKeyDoc))
+              console.log(VisitId)
               $newVisitTemplate.find('.visitId').html(VisitId)
               $newVisitTemplate.find('.patientId').html(patientID22)
               $newVisitTemplate.find('.reasonForVisit').html(reasonForVisit)
@@ -335,7 +382,6 @@ App = {
           }
           return;
         }
-        
         // Put the patient in the correct list
         // Show the task
       }
@@ -343,76 +389,6 @@ App = {
 
     },
 
-    // viewVisits: async () => {
-    //   // Load the total task count from the blockchain
-    //   const doctorId = $('#doctorIdToView').val()
-    //   console.log(doctorId)
-    //   privateKeyDoc = App.doctors[doctorId-1].privateKey;
-    //   const VisitCount = await App.todoList.visitCount()
-    //   const PatientCount = await App.todoList.patientCount()
-    
-    //   for (var i = 1; i <= VisitCount; i++) {
-    //     // Fetch the task data from the blockchain
-    //     const visit = await App.todoList.visits(i)
-    //     const VisitId = visit[0].toNumber()
-        
-    //     if(CryptoJS.AES.decrypt(visit[1],privateKeyDoc)==""){
-    //       continue;
-    //     }
-    //     const patientId = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
-    //     for (var i = 1; i <= PatientCount; i++) {
-    //       if(patientId!==null){
-    //       const patient = await App.todoList.patients(i)
-    //       if(patientId==patient[0].toNumber()){
-    //         const patientName = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
-    //         const patientAge = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[2],privateKeyDoc));
-    //         const patientSex = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[3],privateKeyDoc))
-    //         const patientWeight = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[4],privateKeyDoc))
-    //         const patientPulse = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[5],privateKeyDoc))
-    //         const patientOxygen = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[6],privateKeyDoc))
-
-    //         const $newPatientTemplate = $patientTemplate.clone()
-    //         $newPatientTemplate.find('.patientId').html(patientId)
-    //         $newPatientTemplate.find('.patientName').html(patientName)
-    //         $newPatientTemplate.find('.patientAge').html(patientAge)
-    //         $newPatientTemplate.find('.patientSex').html(patientSex)
-    //         $newPatientTemplate.find('.patientWeight').html(patientWeight)
-    //         $newPatientTemplate.find('.patientPulse').html(patientPulse)
-    //         $newPatientTemplate.find('.patientOxygen').html(patientOxygen)
-           
-    //         // Put the patient in the correct list
-    //         $('#patientList').append($newPatientTemplate)
-    //         // Show the task
-    //         $newPatientTemplate.show()
-    //       }
-    //       }
-    //     }
-    //     const reasonForVisit = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[2],privateKeyDoc))
-    //     const doctorsDiagnoses = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[3],privateKeyDoc))
-    //     const bloodPressure = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[4],privateKeyDoc))
-    //     const glucose = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[5],privateKeyDoc))
-    //     const temperature = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[6],privateKeyDoc))
-    //     const prescription = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[7],privateKeyDoc))
-        
-  
-    //     // Create the html for the task
-    //     const $newVisitTemplate = $visitTemplate.clone()
-    //     $newVisitTemplate.find('.VisitId').html(VisitId)
-    //     $newVisitTemplate.find('.patientId').html(patientId)
-    //     $newVisitTemplate.find('.reasonForVisit').html(reasonForVisit)
-    //     $newVisitTemplate.find('.doctorsDiagnoses').html(doctorsDiagnoses)
-    //     $newVisitTemplate.find('.bloodPressure').html(bloodPressure)
-    //     $newVisitTemplate.find('.glucose').html(glucose)
-    //     $newVisitTemplate.find('.temperature').html(temperature)
-    //     $newVisitTemplate.find('.prescription').html(prescription)
-       
-    //     // Put the patient in the correct list
-    //     $('#visitList').append($newVisitTemplate)
-    //     // Show the task
-    //     $newVisitTemplate.show()
-    //   }
-      
-    // },
 
   
   
