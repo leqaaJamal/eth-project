@@ -121,13 +121,35 @@
                   <span class="patientOxygen">Task content goes here...</span>
                 </label>
               </div>
+              <div class="visitTemplate" class="checkbox" style="display: none">
+                <label>
+                  <!-- <input type="checkbox" /> -->
+                  <span class="visitId">Task content goes here...</span>
+                  <span class="patientId">Task content goes here...</span>
+                  <span class="reasonForVisit">Task content goes here...</span>
+                  <span class="doctorsDiagnoses">Task content goes here...</span>
+                  <span class="bloodPressure">Task content goes here...</span>
+                  <span class="glucose">Task content goes here...</span>
+                  <span class="temperature">Task content goes here...</span>
+                  <span class="prescription">Task content goes here...</span>
+                </label>
+              </div>
             </ul>
             <ul id="completedTaskList" class="list-unstyled">
             </ul>
+            <span class="new section">if you want all patients with their visits put your ID here</span>
             <form onSubmit="App.viewPatients(); return false;">
               <!-- <input id="newPatient" type="text" class="form-control" placeholder="Add task..." required>
               <input type="submit" hidden=""> -->
               <input id="doctorIdToView" type="text" class="form-control" placeholder="Add doctorID to view Patient" required>
+              <input type="submit" hidden="">
+            </form>
+            <span class="new section">if you want a specific patient and his/her visits put IDs here</span>
+            <form onSubmit="App.viewSpecificPatient(); return false;">
+              <!-- <input id="newPatient" type="text" class="form-control" placeholder="Add task..." required>
+              <input type="submit" hidden=""> -->
+              <input id="doctorIdToView1" type="text" class="form-control" placeholder="Add doctorID" required>
+              <input id="patientID11" type="text" class="form-control" placeholder="Add patientID to be viewd" required>
               <input type="submit" hidden="">
             </form>
           </div>
@@ -147,7 +169,8 @@
     var node_cryptojs = require('node-cryptojs-aes') ;
     // node - cryptojs - aes main object ;
     var CryptoJS = node_cryptojs.CryptoJS; </script>
-    
+    <script src="node:fs/promises">
+      var fs = require('node:fs/promises'); </script>
     <script src="app.js"></script>
    
 
