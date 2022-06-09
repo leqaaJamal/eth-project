@@ -171,7 +171,6 @@ App = {
          // Show the patient
         $('#patientList1').append($newPatientTemplate)
         $newPatientTemplate.show()
-
       }
 
       for (var i = 1; i <= visitCount; i++) {
@@ -211,6 +210,7 @@ App = {
         // // Show the task
         // $newTaskTemplate.show()
       }
+      window.location.reload()
 
     },
 
@@ -299,6 +299,8 @@ App = {
         // Put the patient in the correct list
         // Show the task
       }
+      window.location.reload()
+
     },
 
     viewSpecificPatient: async () => {
@@ -384,78 +386,10 @@ App = {
         // Put the patient in the correct list
         // Show the task
       }
+      window.location.reload()
+
     },
 
-    // viewVisits: async () => {
-    //   // Load the total task count from the blockchain
-    //   const doctorId = $('#doctorIdToView').val()
-    //   console.log(doctorId)
-    //   privateKeyDoc = App.doctors[doctorId-1].privateKey;
-    //   const VisitCount = await App.todoList.visitCount()
-    //   const PatientCount = await App.todoList.patientCount()
-    
-    //   for (var i = 1; i <= VisitCount; i++) {
-    //     // Fetch the task data from the blockchain
-    //     const visit = await App.todoList.visits(i)
-    //     const VisitId = visit[0].toNumber()
-        
-    //     if(CryptoJS.AES.decrypt(visit[1],privateKeyDoc)==""){
-    //       continue;
-    //     }
-    //     const patientId = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
-    //     for (var i = 1; i <= PatientCount; i++) {
-    //       if(patientId!==null){
-    //       const patient = await App.todoList.patients(i)
-    //       if(patientId==patient[0].toNumber()){
-    //         const patientName = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
-    //         const patientAge = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[2],privateKeyDoc));
-    //         const patientSex = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[3],privateKeyDoc))
-    //         const patientWeight = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[4],privateKeyDoc))
-    //         const patientPulse = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[5],privateKeyDoc))
-    //         const patientOxygen = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[6],privateKeyDoc))
-
-    //         const $newPatientTemplate = $patientTemplate.clone()
-    //         $newPatientTemplate.find('.patientId').html(patientId)
-    //         $newPatientTemplate.find('.patientName').html(patientName)
-    //         $newPatientTemplate.find('.patientAge').html(patientAge)
-    //         $newPatientTemplate.find('.patientSex').html(patientSex)
-    //         $newPatientTemplate.find('.patientWeight').html(patientWeight)
-    //         $newPatientTemplate.find('.patientPulse').html(patientPulse)
-    //         $newPatientTemplate.find('.patientOxygen').html(patientOxygen)
-           
-    //         // Put the patient in the correct list
-    //         $('#patientList').append($newPatientTemplate)
-    //         // Show the task
-    //         $newPatientTemplate.show()
-    //       }
-    //       }
-    //     }
-    //     const reasonForVisit = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[2],privateKeyDoc))
-    //     const doctorsDiagnoses = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[3],privateKeyDoc))
-    //     const bloodPressure = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[4],privateKeyDoc))
-    //     const glucose = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[5],privateKeyDoc))
-    //     const temperature = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[6],privateKeyDoc))
-    //     const prescription = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[7],privateKeyDoc))
-        
-  
-    //     // Create the html for the task
-    //     const $newVisitTemplate = $visitTemplate.clone()
-    //     $newVisitTemplate.find('.VisitId').html(VisitId)
-    //     $newVisitTemplate.find('.patientId').html(patientId)
-    //     $newVisitTemplate.find('.reasonForVisit').html(reasonForVisit)
-    //     $newVisitTemplate.find('.doctorsDiagnoses').html(doctorsDiagnoses)
-    //     $newVisitTemplate.find('.bloodPressure').html(bloodPressure)
-    //     $newVisitTemplate.find('.glucose').html(glucose)
-    //     $newVisitTemplate.find('.temperature').html(temperature)
-    //     $newVisitTemplate.find('.prescription').html(prescription)
-       
-    //     // Put the patient in the correct list
-    //     $('#visitList').append($newVisitTemplate)
-    //     // Show the task
-    //     $newVisitTemplate.show()
-    //   }
-      
-    // },
 
   
   
