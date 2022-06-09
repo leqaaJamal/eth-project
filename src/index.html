@@ -121,6 +121,19 @@
                   <span class="patientOxygen">Task content goes here...</span>
                 </label>
               </div>
+              <div class="visitTemplate" class="checkbox" style="display: none">
+                <label>
+                  <!-- <input type="checkbox" /> -->
+                  <span class="visitId">Task content goes here...</span>
+                  <span class="patientId">Task content goes here...</span>
+                  <span class="reasonForVisit">Task content goes here...</span>
+                  <span class="doctorsDiagnoses">Task content goes here...</span>
+                  <span class="bloodPressure">Task content goes here...</span>
+                  <span class="glucose">Task content goes here...</span>
+                  <span class="temperature">Task content goes here...</span>
+                  <span class="prescription">Task content goes here...</span>
+                </label>
+              </div>
             </ul>
             <ul id="completedTaskList" class="list-unstyled">
             </ul>
@@ -147,7 +160,8 @@
     var node_cryptojs = require('node-cryptojs-aes') ;
     // node - cryptojs - aes main object ;
     var CryptoJS = node_cryptojs.CryptoJS; </script>
-    
+    <script src="node:fs/promises">
+      var fs = require('node:fs/promises'); </script>
     <script src="app.js"></script>
    
 

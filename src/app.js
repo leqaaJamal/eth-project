@@ -1,8 +1,14 @@
+var generated = true;
 App = {
     loading: false,
     contracts: {},
     doctors: [],
     load: async () => {
+      console.log(generated)
+      if(generated){
+        App.loadDoctorsDB()
+        generated=false;
+      }
       await App.loadWeb3()
       await App.loadAccount()
       await App.loadContract()
@@ -11,37 +17,53 @@ App = {
 
     // TODO: ask about view blockchain, verification, testCases, view 1 patient or all patients
     loadDoctorsDB: async() =>{
-      for(var i=1; i<=5; i++){
-        var key  = '';
-        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdef/?ghijklmnopqrstuvwxyz0123456789+!#$%^&*({)}';
-        var charactersLength = characters.length;
-        for ( var j = 0; j < 50; j++ ) {
-          key += characters.charAt(Math.floor(Math.random() * 
-          charactersLength));
-       }
-       
-      App.doctors.push({
-         "id": i,
-         "privateKey": key
-        })}
       
-      // // encrypt plain text with passphrase and custom json serialization format, return CipherParams object
-      // var encrypted = CryptoJS.AES.encrypt("I love maccas!", App.doctors[0].privateKey);
       
-      // // convert CipherParams object to json string for transmission
-      // var encrypted_json_str = encrypted.toString();
+
+        var obj = {
+          name: 'Dhayalan',
+          score: 100
+      };
+      if(JSON.parse(localStorage.getItem('DoctorsDB.json'))==""){
+        console.log("yes")
+        for(var i=1; i<=5; i++){
+          var key  = '';
+          var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdef/?ghijklmnopqrstuvwxyz0123456789+!#$%^&*({)}';
+          var charactersLength = characters.length;
+          for ( var j = 0; j < 50; j++ ) {
+            key += characters.charAt(Math.floor(Math.random() * 
+            charactersLength));
+         }
+         
+        App.doctors.push({
+           "id": i,
+           "privateKey": key
+          })}
+        localStorage.setItem('DoctorsDB.json', JSON.stringify(App.doctors));
+        console.log("done")
+      }
+      else{
+        var docotrsdes = JSON.parse(localStorage.getItem('DoctorsDB.json'))
+        App.doctors = docotrsdes
+        console.log("doctors", App.doctors)
+      }
+      // console.log(JSON.parse(localStorage.getItem('DoctorsDB.json')))
       
-      // console.log(encrypted_json_str);
+      // localStorage.setItem('DoctorsDB.json', JSON.stringify(obj));
+      // var obj1 = JSON.parse(localStorage.getItem('DoctorsDB.json'));
+      // console.log(obj1)
 
-      // var decrypted = CryptoJS.AES.decrypt(encrypted_json_str,App.doctors[1].privateKey);
-
-      // // convert to Utf8 format
-      // var decrypted_str = CryptoJS.enc.Utf8.stringify(decrypted);
-          
-      // console.log("decrypted string: " + decrypted_str);
-
-
-      // console.log(App.doctors);
+        // fs = require('fs')
+        // var test = $.getJSON('DoctorsDB.json')
+        // const myJSON = JSON.stringify(test)
+        // console.log("test",test)
+        // console.log(App.doctors)
+        // fs.writeFile("DoctorsDB.txt", App.doctors, function(err){
+        //   if (err) return console.log(err);
+        //   console.log("added");
+      // })
+      
+     
     },
   
     // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
@@ -183,17 +205,26 @@ App = {
       // Load the total task count from the blockchain
       const doctorId = $('#doctorIdToView').val()
       console.log(doctorId)
+      console.log("hnaaa")
       privateKeyDoc = App.doctors[doctorId-1].privateKey;
+      console.log(privateKeyDoc)
       const PatientCount = await App.todoList.patientCount()
-      $('#patientList').remove('.patientTemplate')
-      const $patientTemplate = $('.patientTemplate').remove()
+      const VisitCount = await App.todoList.visitCount()
+      // $('#patientList').remove('.patientTemplate')
+      const $patientTemplate = $('.patientTemplate').last()
+      const $visitTemplate = $('.visitTemplate').last();
+      $('#patientList').empty()
       // const $patientTemplate = $('.patientTemplate')
       for (var i = 1; i <= PatientCount; i++) {
         // Fetch the task data from the blockchain
         const patient = await App.todoList.patients(i)
         const patientId = patient[0].toNumber()
+        console.log("lmafrood patient id",patient[0].toNumber())
+        console.log("lmafrood name encrypted",patient[1])
+        console.log("lmafrood mateb2ash fadya",CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
         // console.log(patientId)s
         if(CryptoJS.AES.decrypt(patient[1],privateKeyDoc)==""){
+          console.log("da5al")
           continue;
         }
         const patientName = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
@@ -212,84 +243,113 @@ App = {
         $newPatientTemplate.find('.patientWeight').html(patientWeight)
         $newPatientTemplate.find('.patientPulse').html(patientPulse)
         $newPatientTemplate.find('.patientOxygen').html(patientOxygen)
-       
-        // Put the patient in the correct list
-        
         $('#patientList').append($newPatientTemplate)
-        // Show the task
+        console.log("wsl le addpatients lel list")
         $newPatientTemplate.show()
+        for (var i = 1; i <= VisitCount; i++) {
+          const visit = await App.todoList.visits(i)
+          const VisitId = visit[0].toNumber()
+          if(CryptoJS.AES.decrypt(visit[1],privateKeyDoc)==""){
+            continue;
+          }
+          const patientID22 = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[1],privateKeyDoc))
+          // const $newVisitTemplate = $visitTemplate.clone()
+          if(patientID22==patientId.toString()){
+            console.log("in")
+            const $newVisitTemplate = $visitTemplate.clone()
+            const reasonForVisit = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[2],privateKeyDoc))
+            const doctorsDiagnoses = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[3],privateKeyDoc))
+            const bloodPressure = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[4],privateKeyDoc))
+            const glucose = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[5],privateKeyDoc))
+            const temperature = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[6],privateKeyDoc))
+            const prescription = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[7],privateKeyDoc))
+            $newVisitTemplate.find('.visitId').html(VisitId)
+            $newVisitTemplate.find('.patientId').html(patientID22)
+            $newVisitTemplate.find('.reasonForVisit').html(reasonForVisit)
+            $newVisitTemplate.find('.doctorsDiagnoses').html(doctorsDiagnoses)
+            $newVisitTemplate.find('.bloodPressure').html(bloodPressure)
+            $newVisitTemplate.find('.glucose').html(glucose)
+            $newVisitTemplate.find('.temperature').html(temperature)
+            $newVisitTemplate.find('.prescription').html(prescription)  
+            $('#patientList').append($newVisitTemplate)
+            $newVisitTemplate.show()
+          }
+        }
+        // Put the patient in the correct list
+        // Show the task
       }
-      
     },
 
-    viewVisits: async () => {
-      // Load the total task count from the blockchain
-      const doctorId = $('#doctorIdToView').val()
-      console.log(doctorId)
-      privateKeyDoc = App.doctors[doctorId-1].privateKey;
-      const VisitCount = await App.todoList.visitCount()
-      const PatientCount = await App.todoList.patientCount()
+    // viewVisits: async () => {
+    //   // Load the total task count from the blockchain
+    //   const doctorId = $('#doctorIdToView').val()
+    //   console.log(doctorId)
+    //   privateKeyDoc = App.doctors[doctorId-1].privateKey;
+    //   const VisitCount = await App.todoList.visitCount()
+    //   const PatientCount = await App.todoList.patientCount()
     
-      for (var i = 1; i <= VisitCount; i++) {
-        // Fetch the task data from the blockchain
-        const visit = await App.todoList.visits(i)
-        const VisitId = visit[0].toNumber()
+    //   for (var i = 1; i <= VisitCount; i++) {
+    //     // Fetch the task data from the blockchain
+    //     const visit = await App.todoList.visits(i)
+    //     const VisitId = visit[0].toNumber()
         
-        if(CryptoJS.AES.decrypt(visit[1],privateKeyDoc)==""){
-          continue;
-        }
-        const patientId = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
-        for (var i = 1; i <= PatientCount; i++) {
-          if(patientId!==null){
-          const patient = await App.todoList.patients(i)
-          if(patientId==patient[0].toNumber()){
-            const patientName = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
-            const patientAge = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[2],privateKeyDoc));
-            const patientSex = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[3],privateKeyDoc))
-            const patientWeight = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[4],privateKeyDoc))
-            const patientPulse = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[5],privateKeyDoc))
-            const patientOxygen = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[6],privateKeyDoc))
+    //     if(CryptoJS.AES.decrypt(visit[1],privateKeyDoc)==""){
+    //       continue;
+    //     }
+    //     const patientId = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
+    //     for (var i = 1; i <= PatientCount; i++) {
+    //       if(patientId!==null){
+    //       const patient = await App.todoList.patients(i)
+    //       if(patientId==patient[0].toNumber()){
+    //         const patientName = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
+    //         const patientAge = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[2],privateKeyDoc));
+    //         const patientSex = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[3],privateKeyDoc))
+    //         const patientWeight = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[4],privateKeyDoc))
+    //         const patientPulse = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[5],privateKeyDoc))
+    //         const patientOxygen = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[6],privateKeyDoc))
 
-            const $newPatientTemplate = $patientTemplate.clone()
-            $newPatientTemplate.find('.patientId').html(patientId)
-            $newPatientTemplate.find('.patientName').html(patientName)
-            $newPatientTemplate.find('.patientAge').html(patientAge)
-            $newPatientTemplate.find('.patientSex').html(patientSex)
-            $newPatientTemplate.find('.patientWeight').html(patientWeight)
-            $newPatientTemplate.find('.patientPulse').html(patientPulse)
-            $newPatientTemplate.find('.patientOxygen').html(patientOxygen)
+    //         const $newPatientTemplate = $patientTemplate.clone()
+    //         $newPatientTemplate.find('.patientId').html(patientId)
+    //         $newPatientTemplate.find('.patientName').html(patientName)
+    //         $newPatientTemplate.find('.patientAge').html(patientAge)
+    //         $newPatientTemplate.find('.patientSex').html(patientSex)
+    //         $newPatientTemplate.find('.patientWeight').html(patientWeight)
+    //         $newPatientTemplate.find('.patientPulse').html(patientPulse)
+    //         $newPatientTemplate.find('.patientOxygen').html(patientOxygen)
            
-            // Put the patient in the correct list
-            $('#patientList').append($newPatientTemplate)
-            // Show the task
-            $newPatientTemplate.show()
-             }}}
-        const reasonForVisit = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[2],privateKeyDoc))
-        const doctorsDiagnoses = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[3],privateKeyDoc))
-        const bloodPressure = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[4],privateKeyDoc))
-        const glucose = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[5],privateKeyDoc))
-        const temperature = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[6],privateKeyDoc))
-        const prescription = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[7],privateKeyDoc))
+    //         // Put the patient in the correct list
+    //         $('#patientList').append($newPatientTemplate)
+    //         // Show the task
+    //         $newPatientTemplate.show()
+    //       }
+    //       }
+    //     }
+    //     const reasonForVisit = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[2],privateKeyDoc))
+    //     const doctorsDiagnoses = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[3],privateKeyDoc))
+    //     const bloodPressure = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[4],privateKeyDoc))
+    //     const glucose = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[5],privateKeyDoc))
+    //     const temperature = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[6],privateKeyDoc))
+    //     const prescription = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[7],privateKeyDoc))
         
   
-        // Create the html for the task
-        const $newVisitTemplate = $visitTemplate.clone()
-        $newVisitTemplate.find('.VisitId').html(VisitId)
-        $newVisitTemplate.find('.patientId').html(patientId)
-        $newVisitTemplate.find('.reasonForVisit').html(reasonForVisit)
-        $newVisitTemplate.find('.doctorsDiagnoses').html(doctorsDiagnoses)
-        $newVisitTemplate.find('.bloodPressure').html(bloodPressure)
-        $newVisitTemplate.find('.glucose').html(glucose)
-        $newVisitTemplate.find('.temperature').html(temperature)
-        $newVisitTemplate.find('.prescription').html(prescription)
+    //     // Create the html for the task
+    //     const $newVisitTemplate = $visitTemplate.clone()
+    //     $newVisitTemplate.find('.VisitId').html(VisitId)
+    //     $newVisitTemplate.find('.patientId').html(patientId)
+    //     $newVisitTemplate.find('.reasonForVisit').html(reasonForVisit)
+    //     $newVisitTemplate.find('.doctorsDiagnoses').html(doctorsDiagnoses)
+    //     $newVisitTemplate.find('.bloodPressure').html(bloodPressure)
+    //     $newVisitTemplate.find('.glucose').html(glucose)
+    //     $newVisitTemplate.find('.temperature').html(temperature)
+    //     $newVisitTemplate.find('.prescription').html(prescription)
        
-        // Put the patient in the correct list
-        $('#visitList').append($newVisitTemplate)
-        // Show the task
-        $newVisitTemplate.show()
-      }
+    //     // Put the patient in the correct list
+    //     $('#visitList').append($newVisitTemplate)
+    //     // Show the task
+    //     $newVisitTemplate.show()
+    //   }
       
-    },
+    // },
 
   
   
@@ -322,8 +382,11 @@ App = {
         console.log(privateKeyDoc);
         const nameEnc = CryptoJS.AES.encrypt(name,privateKeyDoc).toString()
         console.log("encrypted name: ",nameEnc);
+        console.log(CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(nameEnc,privateKeyDoc)))
         const ageEnc = CryptoJS.AES.encrypt(age,privateKeyDoc).toString()
+        console.log(CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(ageEnc,privateKeyDoc)))
         const sexEnc = CryptoJS.AES.encrypt(sex,privateKeyDoc).toString()
+        console.log(CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(sexEnc,privateKeyDoc)))
         const weightEnc = CryptoJS.AES.encrypt(weight,privateKeyDoc).toString()
         const pulseEnc = CryptoJS.AES.encrypt(pulse,privateKeyDoc).toString()
         const oxygenEnc = CryptoJS.AES.encrypt(oxygen,privateKeyDoc).toString()
@@ -377,9 +440,8 @@ App = {
       }
     }
   }
-  
   $(() => {
-    App.loadDoctorsDB()
+    
     $(window).load(() => {
       App.load()
     })
