@@ -139,36 +139,75 @@ App = {
   
     renderTasks: async () => {
       // Load the total task count from the blockchain
-      const taskCount = await App.todoList.taskCount()
-      const $taskTemplate = $('.taskTemplate')
+      // const taskCount = await App.todoList.taskCount()
+      // const $taskTemplate = $('.taskTemplate')
+      const patientCount = await App.todoList.patientCount()
+      const $patientTemplate = $('.patientTemplate')
+      const visitCount = await App.todoList.visitCount()
+      const $visitTemplate = $('.visitTemplate')
+
   
       // Render out each task with a new task template
-      for (var i = 1; i <= taskCount; i++) {
-        // Fetch the task data from the blockchain
-        const task = await App.todoList.tasks(i)
-        const taskId = task[0].toNumber()
-        const taskContent = task[1]
-        const taskCompleted = task[2]
+      for (var i = 1; i <= patientCount; i++) {
+    
+        const patient = await App.todoList.patients(i)
+        const patientId = patient[0].toNumber()
+        const name = patient[1]
+        const age = patient[2].toNumber()
+        const sex = patient[3]
+        const weight = patient[4].toNumber()
+        const pulse = patient[5]
+        const oxygen = patient[6]
+
+        // Create the html for the patient
+        const $newPatientTemplate = $patientTemplate.clone()
+        $newPatientTemplate.find('.patientId').html(patientId)
+        $newPatientTemplate.find('.name').html(name)
+        $newPatientTemplate.find('.age').html(age)
+        $newPatientTemplate.find('.sex').html(sex)
+        $newPatientTemplate.find('.weight').html(weight)
+        $newPatientTemplate.find('.pulse').html(pulse)
+        $newPatientTemplate.find('.oxygen').html(oxygen)
+         // Show the patient
+        newPatientTemplate.show()
+
+
+        const visit = await App.todoList.visits(i)
+        patientId = visit[0].toNumber()
+        const reasonForVisit = visit[1]
+        const doctorsDiagnoses = visit[2]
+        const bloodPressure = visit[3]
+        const glucose = visit[4]
+        const temperature = visit[5]
+        const prescription = visit[6]
+
+         // Create the html for the visit
+         const $newVisitTemplate = $visitTemplate.clone()
+         $newVisitTemplate.find('.patientId').html(patientId)
+         $newVisitTemplate.find('.reasonForVisit').html(reasonForVisit)
+         $newVisitTemplate.find('.doctorsDiagnoses').html(doctorsDiagnoses)
+         $newVisitTemplate.find('.bloodPressure').html(bloodPressure)
+         $newVisitTemplate.find('.glucose').html(glucose)
+         $newVisitTemplate.find('.temperature').html(temperature)
+         $newVisitTemplate.find('.prescription').html(prescription)
+          // Show the patient
+          newVisitTemplate.show()
+
+        // // Create the html for the task
+        // const $newTaskTemplate = $taskTemplate.clone()
+        // $newTaskTemplate.find('.content').html(taskContent)
+        // $newTaskTemplate.find('input')
+        //                 .prop('name', taskId)
+        //                 .prop('checked', taskCompleted)
+        //                 .on('click', App.toggleCompleted)
   
-        // Create the html for the task
-        const $newTaskTemplate = $taskTemplate.clone()
-        $newTaskTemplate.find('.content').html(taskContent)
-        $newTaskTemplate.find('input')
-                        .prop('name', taskId)
-                        .prop('checked', taskCompleted)
-                        .on('click', App.toggleCompleted)
-  
-        // Put the task in the correct list
-        if (taskCompleted) {
-          $('#completedTaskList').append($newTaskTemplate)
-        } else {
-          $('#taskList').append($newTaskTemplate)
-        }
-  
-        // Show the task
-        $newTaskTemplate.show()
+        // // Show the task
+        // $newTaskTemplate.show()
       }
     },
+
+
+
 
     viewPatients: async () => {
       // Load the total task count from the blockchain
