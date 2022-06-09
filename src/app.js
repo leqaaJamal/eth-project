@@ -3,66 +3,30 @@ App = {
     contracts: {},
     doctors: [],
     load: async () => {
-      await App.loadDoctorsDB()
       await App.loadWeb3()
       await App.loadAccount()
       await App.loadContract()
       await App.render()
     },
-
+    // TODO: ask about view blockchain, verification, testCases, view 1 patient or all patients
     loadDoctorsDB: async() =>{
         // const doctors = require("/DoctorsDB.json");
         // const doctorsJsonString = fs.readFileSync("/DoctorsDB.json");
         // doctors = JSON.parse(doctorsJsonString);
-        console.log(App.doctors)
+        // console.log(App.doctors)
         // const crypto = require('node:crypto');
         for(var i=1; i<=5; i++){
             var publicK = "dummy";
-            var privateK = "dummy;"
+            var privateK = "dummy"
  
 // convert passphrase to base64 format
-            console.log("hnaaa",r_pass_base64)
-            const key1 = CryptoJS.AES.decrypt(publicK,)
-            const key2 = CryptoJS.AES.decrypt(privateK)
-            console.log(key1)
-            // const {
-            //     generateKeyPair,
-            //     publicEncrypt,
-            //     privateDecrypt
-            //   } = require('crypto');
-            //   generateKeyPair('rsa', {
-            //     modulusLength: 4096,
-            //     publicKeyEncoding: {
-            //       type: 'spki',
-            //       format: 'pem'
-            //     },
-            //     privateKeyEncoding: {
-            //       type: 'pkcs8',
-            //       format: 'pem',
-            //       cipher: 'aes-256-cbc',
-            //       passphrase: 'top secret'
-            //     }
-            //   }, (err, publicKey, privateKey) => {      publicK = publicKey;
-            //     privateK = privateKey;    });
-            // const keys = crypto.generateKeyPair('rsa',{
-            //     modulusLength: 4096,
-            //     publicKeyEncoding: {
-            //       type: 'spki',
-            //       format: 'pem'
-            //     },
-            //     privateKeyEncoding: {
-            //       type: 'pkcs8',
-            //       format: 'pem',
-            //       cipher: 'aes-256-cbc',
-            //       passphrase: 'top secret'
-            //     }
-            //   },(err, publicKey, privateKey) => {
-            //       publicK = publicKey;
-            //       privateK = privateKey;
-            //   });
+            // console.log("hnaaa",r_pass_base64)
+            // const key1 = CryptoJS.AES.decrypt(publicK)
+            // const key2 = CryptoJS.AES.decrypt(privateK)
+            // console.log(key1)
+            //TODO: put generation from salma 
             App.doctors.push({
                 "id": i,
-                "publicKey": publicK+i,
                 "privateKey": privateK+i
             })
         }
@@ -171,19 +135,62 @@ App = {
         // Show the task
         $newTaskTemplate.show()
       }
+      // const doctorId = $('#doctorId').val()
+      // privateKeyDoc = App.doctors[doctorId-1].privateKey;
+      // const PatientCount = await App.todoList.patientCount()
+      // const $patientTemplate = $('.patientTemplate')
+      // for (var i = 1; i <= PatientCount; i++) {
+      //   // Fetch the task data from the blockchain
+      //   const patient = await App.todoList.patients(i)
+      //   const patientId = patient[0]
+      //   const patientName = CryptoJS.AES.decrypt(patient[1],privateKeyDoc).toString()
+      //   const patientAge = CryptoJS.AES.decrypt(patient[2],privateKeyDoc).toString()
+      //   const patientSex = CryptoJS.AES.decrypt(patient[3],privateKeyDoc).toString()
+      //   const patientWeight = CryptoJS.AES.decrypt(patient[4],privateKeyDoc).toString()
+      //   const patientPulse = CryptoJS.AES.decrypt(patient[5],privateKeyDoc).toString()
+      //   const patientOxygen = CryptoJS.AES.decrypt(patient[6],privateKeyDoc).toString()
+  
+      //   // Create the html for the task
+      //   const $newPatientTemplate = $patientTemplate.clone()
+      //   $newPatientTemplate.find('.patientId').html(patientId)
+      //   $newPatientTemplate.find('.patientName').html(patientName)
+      //   $newPatientTemplate.find('.patientAge').html(patientAge)
+      //   $newPatientTemplate.find('.patientSex').html(patientSex)
+      //   $newPatientTemplate.find('.patientWeight').html(patientWeight)
+      //   $newPatientTemplate.find('.patientPulse').html(patientPulse)
+      //   $newPatientTemplate.find('.patientOxygen').html(patientOxygen)
+       
+      //   // Put the patient in the correct list
+      //   $('#patientList').append($newPatientTemplate)
+      //   // Show the task
+      //   $newPatientTemplate.show()
+      // }
 
+    },
+
+    viewPatients: async () => {
+      // Load the total task count from the blockchain
+      const doctorId = $('#doctorIdToView').val()
+      console.log(doctorId)
+      privateKeyDoc = App.doctors[doctorId-1].privateKey;
       const PatientCount = await App.todoList.patientCount()
-      const $patientTemplate = $('.patientTemplate')
+      $('#patientList').remove('.patientTemplate')
+      const $patientTemplate = $('.patientTemplate').remove()
+      // const $patientTemplate = $('.patientTemplate')
       for (var i = 1; i <= PatientCount; i++) {
         // Fetch the task data from the blockchain
         const patient = await App.todoList.patients(i)
         const patientId = patient[0].toNumber()
-        const patientName = patient[1]
-        const patientAge = patient[2].toNumber()
-        const patientSex = patient[3]
-        const patientWeight = patient[4].toNumber()
-        const patientPulse = patient[5].toNumber()
-        const patientOxygen = patient[6].toNumber()
+        // console.log(patientId)s
+        if(CryptoJS.AES.decrypt(patient[1],privateKeyDoc)==""){
+          continue;
+        }
+        const patientName = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
+        const patientAge = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[2],privateKeyDoc));
+        const patientSex = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[3],privateKeyDoc))
+        const patientWeight = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[4],privateKeyDoc))
+        const patientPulse = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[5],privateKeyDoc))
+        const patientOxygen = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(patient[6],privateKeyDoc))
   
         // Create the html for the task
         const $newPatientTemplate = $patientTemplate.clone()
@@ -196,11 +203,12 @@ App = {
         $newPatientTemplate.find('.patientOxygen').html(patientOxygen)
        
         // Put the patient in the correct list
+        
         $('#patientList').append($newPatientTemplate)
         // Show the task
         $newPatientTemplate.show()
       }
-
+      
     },
 
     
@@ -222,16 +230,58 @@ App = {
     createPatient: async () => {
         App.setLoading(true)
         // const patientCount = $('#newPatient').val()
+        const doctorId = $('#doctorId').val()
         const name = $('#patientName').val()
         const age = $('#patientAge').val()
         const sex = $('#patientSex').val()
         const weight = $('#patientWeight').val()
         const pulse = $('#patientPulse').val()
         const oxygen = $('#patientOxygen').val()
+        privateKeyDoc = App.doctors[doctorId-1].privateKey;
+        console.log("hnaa");
+        console.log(privateKeyDoc);
+        const nameEnc = CryptoJS.AES.encrypt(name,privateKeyDoc).toString()
+        console.log("encrypted name: ",nameEnc);
+        const ageEnc = CryptoJS.AES.encrypt(age,privateKeyDoc).toString()
+        const sexEnc = CryptoJS.AES.encrypt(sex,privateKeyDoc).toString()
+        const weightEnc = CryptoJS.AES.encrypt(weight,privateKeyDoc).toString()
+        const pulseEnc = CryptoJS.AES.encrypt(pulse,privateKeyDoc).toString()
+        const oxygenEnc = CryptoJS.AES.encrypt(oxygen,privateKeyDoc).toString()
+        // console.log(CryptoJS.AES.decrypt(nameEnc,privateKeyDoc).toString())
+
         // Patient(patientCount, _name, age, _sex, weight, pulse, oxygen);
-        await App.todoList.createPatient(name, age, sex, weight, pulse, oxygen);
+        await App.todoList.createPatient(nameEnc, ageEnc, sexEnc, weightEnc, pulseEnc, oxygenEnc);
         window.location.reload()
     },
+
+    createVisits: async () => {
+      App.setLoading(true)
+      // const patientCount = $('#newPatient').val()
+      const doctorId = $('#doctorId1').val()
+      const pID = $('#patientId').val()
+      const reason = $('#reasonForVisit').val()
+      const diagnoses = $('#doctorsDiagnoses').val()
+      const pressure = $('#bloodPressure').val()
+      const glucose = $('#glucose').val()
+      const temperature = $('#temperature').val()
+      const prescription = $('#prescription').val()
+      privateKeyDoc = App.doctors[doctorId-1].privateKey;
+      console.log("hnaa");
+      console.log(privateKeyDoc);
+      const pIDEnc = CryptoJS.AES.encrypt(pID,privateKeyDoc).toString()
+      // console.log("encrypted name: ",nameEnc);
+      const reasonEnc = CryptoJS.AES.encrypt(reason,privateKeyDoc).toString()
+      const diagnosesEnc = CryptoJS.AES.encrypt(diagnoses,privateKeyDoc).toString()
+      const pressureEnc = CryptoJS.AES.encrypt(pressure,privateKeyDoc).toString()
+      const glucoseEnc = CryptoJS.AES.encrypt(glucose,privateKeyDoc).toString()
+      const temperatureEnc = CryptoJS.AES.encrypt(temperature,privateKeyDoc).toString()
+      const prescriptionEnc = CryptoJS.AES.encrypt(prescription,privateKeyDoc).toString()
+      // console.log(CryptoJS.AES.decrypt(nameEnc,privateKeyDoc).toString())
+
+      // Patient(patientCount, _name, age, _sex, weight, pulse, oxygen);
+      await App.todoList.createVisit(pIDEnc, reasonEnc, diagnosesEnc, pressureEnc, glucoseEnc, temperatureEnc,prescriptionEnc);
+      window.location.reload()
+  },
    
   
     setLoading: (boolean) => {
@@ -249,6 +299,7 @@ App = {
   }
   
   $(() => {
+    App.loadDoctorsDB()
     $(window).load(() => {
       App.load()
     })

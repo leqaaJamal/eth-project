@@ -43,20 +43,21 @@ contract TodoList {
     struct Patient{
         uint id;
         string name;
-        int age;
+        string age;
         string sex;
-        int weight;
-        int pulse;
-        int oxygen;
+        string weight;
+        string pulse;
+        string oxygen;
     }
 
     struct Visit{
         uint id;
+        string patientId;
         string reasonForVisit;
         string doctorsDiagnoses;
-        int bloodPressure;
-        int glucose;
-        int temperature;
+        string bloodPressure;
+        string glucose;
+        string temperature;
         string prescription;
     }
  
@@ -66,35 +67,36 @@ contract TodoList {
     event PatientCreated(
         uint id, 
         string name, 
-        int age, 
+        string age, 
         string sex, 
-        int weight, 
-        int pulse, 
-        int oxygen
+        string weight, 
+        string pulse, 
+        string oxygen
     );
 
     event VisitCreated(
         uint id,
+        string patientId,
         string reasonForVisit,
         string doctorsDiagnoses,
-        int bloodPressure,
-        int glucose,
-        int temperature,
+        string bloodPressure,
+        string glucose,
+        string temperature,
         string prescription
     );
 
-    function createPatient(string memory _name, int age, string memory _sex, int weight,int pulse, int oxygen ) public {
+    function createPatient(string memory _name, string memory age, string memory _sex, string memory weight,string memory pulse, string memory oxygen ) public {
         patientCount ++;
         patients[patientCount] = Patient(patientCount, _name, age, _sex, weight, pulse, oxygen);
         emit PatientCreated(patientCount, _name, age, _sex, weight, pulse, oxygen);
     }
 
-    function createVisit(string memory _reasonForVisit, string memory _doctorsDiagnoses, int bloodPressure,
-        int glucose, int temperature, string memory _prescription ) public {
+    function createVisit(string memory patientId, string memory _reasonForVisit, string memory _doctorsDiagnoses, string memory bloodPressure,
+        string memory glucose, string memory temperature, string memory _prescription ) public {
         visitCount ++;
-        visits[visitCount] = Visit(visitCount, _reasonForVisit, _doctorsDiagnoses, bloodPressure, glucose, temperature,
+        visits[visitCount] = Visit(visitCount, patientId, _reasonForVisit, _doctorsDiagnoses, bloodPressure, glucose, temperature,
         _prescription);
-        emit VisitCreated(visitCount, _reasonForVisit, _doctorsDiagnoses, bloodPressure, glucose, temperature,
+        emit VisitCreated(visitCount, patientId, _reasonForVisit, _doctorsDiagnoses, bloodPressure, glucose, temperature,
         _prescription);
     }
 

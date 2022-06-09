@@ -63,6 +63,8 @@
             <form onSubmit="App.createPatient(); return false;">
               <!-- <input id="newPatient" type="text" class="form-control" placeholder="Add task..." required>
               <input type="submit" hidden=""> -->
+              <input id="doctorId" type="text" class="form-control" placeholder="Add doctorID..." required>
+              <input type="submit" hidden="">
               <input id="patientName" type="text" class="form-control" placeholder="Add name..." required>
               <input type="submit" hidden="">
               <input id="patientAge" type="text" class="form-control" placeholder="Add age..." required>
@@ -76,6 +78,27 @@
               <input id="patientOxygen" type="text" class="form-control" placeholder="Add oxygen..." required>
               <input type="submit" hidden="">
             </form>
+            <span class="new section">add visits </span>
+            <form onSubmit="App.createVisits(); return false;">
+              <!-- <input id="newPatient" type="text" class="form-control" placeholder="Add task..." required>
+              <input type="submit" hidden=""> -->
+              <input id="doctorId1" type="text" class="form-control" placeholder="Add doctorID..." required>
+              <input type="submit" hidden="">
+              <input id="patientId" type="text" class="form-control" placeholder="Add patientID..." required>
+              <input type="submit" hidden="">
+              <input id="reasonForVisit" type="text" class="form-control" placeholder="Add reason For Visit..." required>
+              <input type="submit" hidden="">
+              <input id="doctorsDiagnoses" type="text" class="form-control" placeholder="Add doctor's Diagnoses..." required>
+              <input type="submit" hidden="">
+              <input id="bloodPressure" type="text" class="form-control" placeholder="Add blood Pressure..." required>
+              <input type="submit" hidden="">
+              <input id="glucose" type="text" class="form-control" placeholder="Add glucose..." required>
+              <input type="submit" hidden="">
+              <input id="temperature" type="text" class="form-control" placeholder="Add temperature..." required>
+              <input type="submit" hidden="">
+              <input id="prescription" type="text" class="form-control" placeholder="Add prescription..." required>
+              <input type="submit" hidden="">
+            </form>
             <ul id="taskList" class="list-unstyled">
               <div class="taskTemplate" class="checkbox" style="display: none">
                 <label>
@@ -84,6 +107,7 @@
                 </label>
               </div>
             </ul>
+            <span class="new section">viewing patients and visit for the given doctor id</span>
             <ul id="patientList" class="list-unstyled">
               <div class="patientTemplate" class="checkbox" style="display: none">
                 <label>
@@ -100,6 +124,12 @@
             </ul>
             <ul id="completedTaskList" class="list-unstyled">
             </ul>
+            <form onSubmit="App.viewPatients(); return false;">
+              <!-- <input id="newPatient" type="text" class="form-control" placeholder="Add task..." required>
+              <input type="submit" hidden=""> -->
+              <input id="doctorIdToView" type="text" class="form-control" placeholder="Add doctorID to view Patient" required>
+              <input type="submit" hidden="">
+            </form>
           </div>
         </main>
       </div>
