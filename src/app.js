@@ -357,7 +357,7 @@ App = {
             const patientID22 = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[1],privateKeyDoc))
             // const $newVisitTemplate = $visitTemplate.clone()
             if(patientID22==patientId.toString()){
-              console.log("in")
+              console.log("in visit")
               const $newVisitTemplate = $visitTemplate.clone()
               const reasonForVisit = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[2],privateKeyDoc))
               const doctorsDiagnoses = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[3],privateKeyDoc))
@@ -365,6 +365,7 @@ App = {
               const glucose = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[5],privateKeyDoc))
               const temperature = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[6],privateKeyDoc))
               const prescription = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[7],privateKeyDoc))
+              console.log(VisitId)
               $newVisitTemplate.find('.visitId').html(VisitId)
               $newVisitTemplate.find('.patientId').html(patientID22)
               $newVisitTemplate.find('.reasonForVisit').html(reasonForVisit)
