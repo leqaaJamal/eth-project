@@ -168,6 +168,7 @@ App = {
         // Show the task
         $newTaskTemplate.show()
       }
+      window.location.reload()
     },
 
     viewPatients: async () => {
@@ -252,6 +253,8 @@ App = {
         // Put the patient in the correct list
         // Show the task
       }
+      window.location.reload()
+
     },
 
     viewSpecificPatient: async () => {
@@ -336,6 +339,8 @@ App = {
         // Put the patient in the correct list
         // Show the task
       }
+      window.location.reload()
+
     },
 
     // viewVisits: async () => {
