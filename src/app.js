@@ -142,9 +142,9 @@ App = {
       // const taskCount = await App.todoList.taskCount()
       // const $taskTemplate = $('.taskTemplate')
       const patientCount = await App.todoList.patientCount()
-      const $patientTemplate = $('.patientTemplate')
+      const $patientTemplate = $('.patientTemplate1')
       const visitCount = await App.todoList.visitCount()
-      const $visitTemplate = $('.visitTemplate')
+      const $visitTemplate = $('.visitTemplate1')
 
   
       // Render out each task with a new task template
@@ -153,45 +153,52 @@ App = {
         const patient = await App.todoList.patients(i)
         const patientId = patient[0].toNumber()
         const name = patient[1]
-        const age = patient[2].toNumber()
+        const age = patient[2]
         const sex = patient[3]
-        const weight = patient[4].toNumber()
+        const weight = patient[4]
         const pulse = patient[5]
         const oxygen = patient[6]
 
         // Create the html for the patient
         const $newPatientTemplate = $patientTemplate.clone()
-        $newPatientTemplate.find('.patientId').html(patientId)
-        $newPatientTemplate.find('.name').html(name)
-        $newPatientTemplate.find('.age').html(age)
-        $newPatientTemplate.find('.sex').html(sex)
-        $newPatientTemplate.find('.weight').html(weight)
-        $newPatientTemplate.find('.pulse').html(pulse)
-        $newPatientTemplate.find('.oxygen').html(oxygen)
+        $newPatientTemplate.find('.patientId111').html(patientId)
+        $newPatientTemplate.find('.patientName1').html(name)
+        $newPatientTemplate.find('.patientAge1').html(age)
+        $newPatientTemplate.find('.patientSex1').html(sex)
+        $newPatientTemplate.find('.patientWeight1').html(weight)
+        $newPatientTemplate.find('.patientPulse1').html(pulse)
+        $newPatientTemplate.find('.patientOxygen1').html(oxygen)
          // Show the patient
-        newPatientTemplate.show()
+        $('#patientList1').append($newPatientTemplate)
+        $newPatientTemplate.show()
 
+      }
 
+      for (var i = 1; i <= visitCount; i++) {
+    
         const visit = await App.todoList.visits(i)
-        patientId = visit[0].toNumber()
-        const reasonForVisit = visit[1]
-        const doctorsDiagnoses = visit[2]
-        const bloodPressure = visit[3]
-        const glucose = visit[4]
-        const temperature = visit[5]
-        const prescription = visit[6]
+        const visitID= visit[0].toNumber()
+        const patientId = visit[1]
+        const reasonForVisit = visit[2]
+        const doctorsDiagnoses = visit[3]
+        const bloodPressure = visit[4]
+        const glucose = visit[5]
+        const temperature = visit[6]
+        const prescription = visit[7]
 
          // Create the html for the visit
          const $newVisitTemplate = $visitTemplate.clone()
-         $newVisitTemplate.find('.patientId').html(patientId)
-         $newVisitTemplate.find('.reasonForVisit').html(reasonForVisit)
-         $newVisitTemplate.find('.doctorsDiagnoses').html(doctorsDiagnoses)
-         $newVisitTemplate.find('.bloodPressure').html(bloodPressure)
-         $newVisitTemplate.find('.glucose').html(glucose)
-         $newVisitTemplate.find('.temperature').html(temperature)
-         $newVisitTemplate.find('.prescription').html(prescription)
+         $newVisitTemplate.find('.visitId111').html(visitID)
+         $newVisitTemplate.find('.patientId1111').html(patientId)
+         $newVisitTemplate.find('.reasonForVisit1').html(reasonForVisit)
+         $newVisitTemplate.find('.doctorsDiagnoses1').html(doctorsDiagnoses)
+         $newVisitTemplate.find('.bloodPressure1').html(bloodPressure)
+         $newVisitTemplate.find('.glucose1').html(glucose)
+         $newVisitTemplate.find('.temperature1').html(temperature)
+         $newVisitTemplate.find('.prescription1').html(prescription)
           // Show the patient
-          newVisitTemplate.show()
+          $('#patientList1').append($newVisitTemplate)
+          $newVisitTemplate.show()
 
         // // Create the html for the task
         // const $newTaskTemplate = $taskTemplate.clone()
@@ -204,6 +211,7 @@ App = {
         // // Show the task
         // $newTaskTemplate.show()
       }
+
     },
 
 
