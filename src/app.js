@@ -238,7 +238,13 @@ App = {
         console.log("lmafrood name encrypted",patient[1])
         console.log("lmafrood mateb2ash fadya",CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
         // console.log(patientId)
-        if(CryptoJS.AES.decrypt(patient[1],privateKeyDoc)==""){
+        if(CryptoJS.AES.decrypt(patient[1],privateKeyDoc)=="" ||
+        CryptoJS.AES.decrypt(patient[2],privateKeyDoc)==""||
+        CryptoJS.AES.decrypt(patient[3],privateKeyDoc)==""||
+        CryptoJS.AES.decrypt(patient[4],privateKeyDoc)==""||
+        CryptoJS.AES.decrypt(patient[5],privateKeyDoc)==""||
+        CryptoJS.AES.decrypt(patient[6],privateKeyDoc)==""
+          ){
           console.log("da5al")
           continue;
         }
@@ -268,7 +274,14 @@ App = {
           var dec =  CryptoJS.AES.decrypt(visit[1],privateKeyDoc)
           console.log(dec)
           // console.log(CryptoJS.AES.decrypt(visit[1],privateKeyDoc))
-          if(CryptoJS.AES.decrypt(visit[1],privateKeyDoc)==""){
+          if(CryptoJS.AES.decrypt(visit[1],privateKeyDoc)=="" ||
+          CryptoJS.AES.decrypt(visit[2],privateKeyDoc)==""||
+          CryptoJS.AES.decrypt(visit[3],privateKeyDoc)==""||
+          CryptoJS.AES.decrypt(visit[4],privateKeyDoc)==""||
+          CryptoJS.AES.decrypt(visit[5],privateKeyDoc)==""||
+          CryptoJS.AES.decrypt(visit[6],privateKeyDoc)==""||
+          CryptoJS.AES.decrypt(visit[7],privateKeyDoc)==""
+          ){
             console.log("in hnaa lmafrood yd5ol")
             continue;
           }
@@ -298,9 +311,11 @@ App = {
         // Put the patient in the correct list
         // Show the task
       }
+      await new Promise(r => setTimeout(r, 5000));
       window.location.reload()
 
     },
+    
 
     viewSpecificPatient: async () => {
       // Load the total task count from the blockchain
@@ -326,7 +341,12 @@ App = {
           console.log("lmafrood name encrypted",patient[1])
           console.log("lmafrood mateb2ash fadya",CryptoJS.AES.decrypt(patient[1],privateKeyDoc))
           // console.log(patientId)s
-          if(CryptoJS.AES.decrypt(patient[1],privateKeyDoc)==""){
+          if(CryptoJS.AES.decrypt(patient[1],privateKeyDoc)=="" ||
+          CryptoJS.AES.decrypt(patient[2],privateKeyDoc)==""||
+          CryptoJS.AES.decrypt(patient[3],privateKeyDoc)==""||
+          CryptoJS.AES.decrypt(patient[4],privateKeyDoc)==""||
+          CryptoJS.AES.decrypt(patient[5],privateKeyDoc)==""||
+          CryptoJS.AES.decrypt(patient[6],privateKeyDoc)==""){
             console.log("da5al")
             continue;
           }
@@ -352,7 +372,13 @@ App = {
           for (var j = 1; j <= VisitCount; j++) {
             const visit = await App.todoList.visits(j)
             const VisitId = visit[0].toNumber()
-            if(CryptoJS.AES.decrypt(visit[1],privateKeyDoc)==""){
+            if(CryptoJS.AES.decrypt(visit[1],privateKeyDoc)=="" ||
+            CryptoJS.AES.decrypt(visit[2],privateKeyDoc)==""||
+            CryptoJS.AES.decrypt(visit[3],privateKeyDoc)==""||
+            CryptoJS.AES.decrypt(visit[4],privateKeyDoc)==""||
+            CryptoJS.AES.decrypt(visit[5],privateKeyDoc)==""||
+            CryptoJS.AES.decrypt(visit[6],privateKeyDoc)==""||
+            CryptoJS.AES.decrypt(visit[7],privateKeyDoc)==""){
               continue;
             }
             const patientID22 = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(visit[1],privateKeyDoc))
@@ -463,7 +489,7 @@ App = {
       await App.todoList.createVisit(pIDEnc, reasonEnc, diagnosesEnc, pressureEnc, glucoseEnc, temperatureEnc,prescriptionEnc);
       window.location.reload()
   },
-   
+  
   
     setLoading: (boolean) => {
       App.loading = boolean
